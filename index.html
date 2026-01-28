@@ -4,26 +4,96 @@
 <meta charset="utf-8">
 <title>Guess the European Flag</title>
 <style>
-  body{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;margin:0;padding:0;display:flex;justify-content:cebody{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;margin:0;padding:0;display:flex;justify-content:center;align-items:center;height:100vh;}
-  #game{background:white;border-radius:8px;padding:20px 30px;box-shadow:0 4px 12px
-rgba(0,0,0,.15);text-align:center;}
-  #flag{max-width:300px;margin:20px auto;display:block;}
-  .options{margin-top:10px;text-align:left;}
-  .options label{display:block;margin-bottom:8px;}
-  #feedback{font-size:1.3rem;margin-top:15px;}
-  .correct{color:#2e7d32;}
-  .wrong{color:#c62828;}
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  font-size: 1.8rem;
-  button{margin-top:15px;padding:8px
-16px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;}
-  button:hover{background:#1565c0;}
+  /* Base Styles */
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.1rem; /* Slightly larger base font */
+  }
+
+  #game {
+    background: white;
+    border-radius: 8px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  #flag {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    margin: 20px auto;
+    display: block;
+  }
+
+  /* Options Styling */
+  .options {
+    margin-top: 20px;
+    text-align: left;
+  }
+
+  .options label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 1.4rem; /* Larger font for the choices */
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  .options label:hover {
+    background: #f0f0f0;
+  }
+
+  .options input {
+    transform: scale(1.4); /* Makes the checkbox itself bigger */
+    margin-right: 10px;
+  }
+
+  /* Feedback Styling */
+  #feedback {
+    font-size: 2rem; /* Big, bold feedback */
+    font-weight: bold;
+    margin-top: 20px;
+    min-height: 2.5rem;
+  }
+
+  .correct { color: #2e7d32; }
+  .wrong { color: #c62828; }
+
+  button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #1565c0;
+  }
 </style>
 </head>
 <body>
+
 <div id="game">
   <h2>Gissa flaggan</h2>
   <img id="flag" src="" alt="European Flag">
@@ -32,10 +102,9 @@ rgba(0,0,0,.15);text-align:center;}
   <button id="nextBtn" style="display:none;">Nästa flagga</button>
 </div>
 
-<!-- Confetti library -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
-/* ---------- Data: 10 European flags (country, image URL) ---------- */
+/* ---------- Data: European flags ---------- */
 const flags = [
   { country: 'Frankrike', img: 'https://flagcdn.com/w320/fr.png' },
   { country: 'Tyskland', img: 'https://flagcdn.com/w320/de.png' },
@@ -55,18 +124,15 @@ const flags = [
   { country: 'Danmark', img: 'https://flagcdn.com/w320/dk.png' }
 ];
 
-/* ---------- Game State ---------- */
-let currentFlag = null;      // { country, img }
-let options = [];            // array of country names (3 items)
-let correctIdx = 0;          // index of correct answer in `options`
+let currentFlag = null;
+let options = [];
+let correctIdx = 0;
 
-/* ---------- DOM Elements ---------- */
 const flagEl = document.getElementById('flag');
 const formEl = document.getElementById('quizForm');
 const feedbackEl = document.getElementById('feedback');
-const nextBtn   = document.getElementById('nextBtn');
+const nextBtn = document.getElementById('nextBtn');
 
-/* ---------- Helper Functions ---------- */
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
@@ -75,36 +141,28 @@ function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-/* ---------- Load a New Question ---------- */
 function loadQuestion() {
-  // 1. Pick the correct flag
   currentFlag = pickRandom(flags);
-
-  // 2. Pick 2 other distinct flags
   const otherFlags = flags.filter(f => f !== currentFlag);
   const wrongFlags = shuffle(otherFlags).slice(0, 2);
 
-  // 3. Build options array (shuffled)
   options = shuffle([currentFlag.country, ...wrongFlags.map(f => f.country)]);
   correctIdx = options.indexOf(currentFlag.country);
 
-  // 4. Update DOM
   flagEl.src = currentFlag.img;
-  formEl.innerHTML = ''; // clear previous options
+  formEl.innerHTML = ''; 
 
   options.forEach((opt, i) => {
     const id = 'opt' + i;
-    const div = document.createElement('label');
-    div.innerHTML = `<input type="checkbox" name="answer" id="${id}" value="${i}"> ${opt}`;
-    formEl.appendChild(div);
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="checkbox" name="answer" id="${id}" value="${i}"> ${opt}`;
+    formEl.appendChild(label);
   });
 
-  // Reset feedback
   feedbackEl.textContent = '';
   feedbackEl.className = '';
   nextBtn.style.display = 'none';
 
-  // Ensure only one checkbox can be selected
   formEl.querySelectorAll('input[type=checkbox]').forEach(cb => {
     cb.addEventListener('change', () => {
       if (cb.checked) {
@@ -116,10 +174,9 @@ function loadQuestion() {
   });
 }
 
-/* ---------- Handle Answer ---------- */
 function checkAnswer() {
   const selected = formEl.querySelector('input[type=checkbox]:checked');
-  if (!selected) return; // nothing selected
+  if (!selected) return;
 
   const chosenIdx = parseInt(selected.value, 10);
   if (chosenIdx === correctIdx) {
@@ -131,28 +188,23 @@ function checkAnswer() {
       origin: { y: 0.6 }
     });
   } else {
-    feedbackEl.textContent = 'Wrong!';
+    feedbackEl.textContent = 'Fel!';
     feedbackEl.className = 'wrong';
   }
 
-  // Disable further changes until next flag
   formEl.querySelectorAll('input').forEach(i => i.disabled = true);
 
-  // Show "Next" button after 2 seconds
   setTimeout(() => {
     nextBtn.style.display = 'inline-block';
-  }, 2000);
+  }, 1000);
 }
 
-/* ---------- Event Listeners ---------- */
 formEl.addEventListener('change', checkAnswer);
 nextBtn.addEventListener('click', () => {
-  // Re‑enable inputs
   formEl.querySelectorAll('input').forEach(i => i.disabled = false);
   loadQuestion();
 });
 
-/* ---------- Init ---------- */
 loadQuestion();
 </script>
 </body>
