@@ -24,7 +24,7 @@ rgba(0,0,0,.15);text-align:center;}
 </head>
 <body>
 <div id="game">
-  <h2>Guess the Flag</h2>
+  <h2>Gissa flaggan</h2>
   <img id="flag" src="" alt="European Flag">
   <form id="quizForm" class="options"></form>
   <div id="feedback"></div>
@@ -36,16 +36,22 @@ rgba(0,0,0,.15);text-align:center;}
 <script>
 /* ---------- Data: 10 European flags (country, image URL) ---------- */
 const flags = [
-  { country: 'France', img: 'https://flagcdn.com/w320/fr.png' },
-  { country: 'Germany', img: 'https://flagcdn.com/w320/de.png' },
-  { country: 'Italy', img: 'https://flagcdn.com/w320/it.png' },
-  { country: 'Spain', img: 'https://flagcdn.com/w320/es.png' },
-  { country: 'United Kingdom', img: 'https://flagcdn.com/w320/gb.png' },
-  { country: 'Poland', img: 'https://flagcdn.com/w320/pl.png' },
-  { country: 'Sweden', img: 'https://flagcdn.com/w320/se.png' },
+  { country: 'Frankrike', img: 'https://flagcdn.com/w320/fr.png' },
+  { country: 'Tyskland', img: 'https://flagcdn.com/w320/de.png' },
+  { country: 'Italien', img: 'https://flagcdn.com/w320/it.png' },
+  { country: 'Spanien', img: 'https://flagcdn.com/w320/es.png' },
+  { country: 'England', img: 'https://flagcdn.com/w320/gb.png' },
+  { country: 'Polen', img: 'https://flagcdn.com/w320/pl.png' },
+  { country: 'Sverige', img: 'https://flagcdn.com/w320/se.png' },
   { country: 'Portugal', img: 'https://flagcdn.com/w320/pt.png' },
-  { country: 'Greece', img: 'https://flagcdn.com/w320/gr.png' },
-  { country: 'Norway', img: 'https://flagcdn.com/w320/no.png' }
+  { country: 'Grekland', img: 'https://flagcdn.com/w320/gr.png' },
+  { country: 'Norge', img: 'https://flagcdn.com/w320/no.png' }
+  { country: 'Finland', img: 'https://flagcdn.com/w320/fin.png' }
+  { country: 'Ryssland', img: 'https://flagcdn.com/w320/ru.png' }
+  { country: 'Österrike', img: 'https://flagcdn.com/w320/at.png' }
+  { country: 'Serbien', img: 'https://flagcdn.com/w320/rs.png' }
+  { country: 'Ukraina', img: 'https://flagcdn.com/w320/ua.png' }
+  { country: 'Danmark', img: 'https://flagcdn.com/w320/dk.png' }
 ];
 
 /* ---------- Game State ---------- */
